@@ -1,0 +1,19 @@
+node_modules/
+dist/
+
+.env
+.env.local
+
+test-results/
+playwright-report/
+blob-report/
+allure-results/
+allure-report/
+
+*.log
+.DS_Store
+
+# Claude Code / agent-skill tooling used to build this repo — not part of the deliverable
+.claude/
+.agents/
+skills-lock.json
