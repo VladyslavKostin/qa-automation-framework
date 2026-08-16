@@ -64,6 +64,8 @@ src/entities/         plain response/domain-model interfaces (Post, CheckoutInfo
 src/testdata/         test-data builders (Builder pattern, @faker-js/faker-seeded defaults)
 src/pages/sauce-demo/ LoginPage, InventoryPage, CartPage, CheckoutStepOnePage,
                       CheckoutOverviewPage, CheckoutCompletePage — the Part 1 UI target
+src/flows/sauce-demo/ SauceDemoFlows — reusable, test.step()-wrapped action steps (login, add to
+                      cart, checkout, ...) composed from page objects, shared across spec files
 tests/ui/, tests/api/ the two required Playwright specs
 tests/unit/           Vitest specs for everything under src/core and src/testdata
 .claude/skills/qa-*   Claude Code skills for generating new tests — see below
@@ -88,6 +90,10 @@ sql/                  Part 3 deliverable
   methods override only the field(s) a given test cares about, `.build()` returns a plain
   `CheckoutInfo`. Used in `tests/ui/cart.spec.ts` to drive the checkout form with realistic,
   non-hardcoded data.
+- **Facade** (`SauceDemoFlows`) — each method (`loginAsStandardUser`, `addBackpackToCart`,
+  `fillCheckoutInfoAndContinue`, ...) hides the coordination of several page objects behind one
+  call, wrapped in its own `test.step()`. Any spec composes these instead of re-typing the same
+  step bodies — see [Reusable flows](#reusable-flows) below.
 - **Template Method** (`BaseElement.perform`) — the find-it/act-on-it/heal-on-failure sequence is
   implemented exactly once; `Button`, `Input`, `Dropdown`, `Checkbox`, `Link`, `Text` only add the
   interactions specific to them.
@@ -97,6 +103,28 @@ sql/                  Part 3 deliverable
   untrusted input: a malformed or incomplete JSON reply makes healing a no-op (the original error
   propagates) instead of throwing something worse. This is also exactly what happens when
   `MockLlmProvider` is in play, which is what makes healing unit-testable with zero API key.
+
+## Reusable flows
+
+The first pass wrote each `test.step()` action inline in `tests/ui/cart.spec.ts`. Since those
+steps (log in, add an item, verify the cart, fill checkout info, finish, verify confirmation) are
+exactly the kind of thing a second spec would need too, they now live once in
+[`src/flows/sauce-demo/SauceDemoFlows.ts`](src/flows/sauce-demo/SauceDemoFlows.ts), each still
+wrapped in its own `test.step()` so the Allure/Playwright report breakdown is unchanged:
+
+```ts
+const flows = new SauceDemoFlows(page, pages);
+
+await flows.loginAsStandardUser(config.ui.username, config.ui.password);
+await flows.addBackpackToCart();
+await flows.verifyCartContains('Sauce Labs Backpack');
+```
+
+A new spec — say, "remove an item from the cart" — reuses `loginAsStandardUser` and
+`addBackpackToCart` as-is and only adds its own new step(s); nothing about login or add-to-cart
+gets retyped or drifts out of sync between specs. New flows for other journeys follow the same
+shape: one class per feature under `src/flows/<feature>/`, constructed with `(page,
+pages)`, one method per reusable step.
 
 ## Self-healing locators
 

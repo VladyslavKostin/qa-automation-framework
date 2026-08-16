@@ -71,6 +71,8 @@ src/core/healing/     → AgentLocatorHealer: wraps a BaseElement resolution, re
 src/entities/         → response/domain-model interfaces (Post, CheckoutInfo)
 src/testdata/         → test-data builders (Builder pattern, faker-seeded defaults)
 src/pages/            → SauceDemo page objects (Login, Inventory, Cart, three Checkout pages)
+src/flows/            → reusable, test.step()-wrapped action steps composed from page objects
+                        (Facade pattern), shared across spec files instead of duplicated inline
 tests/ui/             → Playwright UI specs
 tests/api/            → Playwright API specs
 tests/unit/           → Vitest unit specs for src/core/** and src/testdata/** (TDD)

@@ -17,7 +17,8 @@
       "@core/*": ["src/core/*"],
       "@pages/*": ["src/pages/*"],
       "@entities/*": ["src/entities/*"],
-      "@testdata/*": ["src/testdata/*"]
+      "@testdata/*": ["src/testdata/*"],
+      "@flows/*": ["src/flows/*"]
     }
   },
   "include": ["src", "tests", "tools", "playwright.config.ts", "vitest.config.ts"]

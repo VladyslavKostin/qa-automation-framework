@@ -8,11 +8,6 @@ test.describe('jsonplaceholder — posts', () => {
 
     expect(response.status).toBe(200);
     expect(response.data.id).toBe(1);
-    assertHasNonEmptyFields(response.data as unknown as Record<string, unknown>, [
-      'id',
-      'userId',
-      'title',
-      'body',
-    ]);
+    assertHasNonEmptyFields(response.data, ['id', 'userId', 'title', 'body']);
   });
 });
