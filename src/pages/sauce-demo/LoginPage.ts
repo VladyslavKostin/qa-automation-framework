@@ -1,29 +1,37 @@
 import { BasePage } from '@core/pages/BasePage';
+import { Input } from '@core/elements/Input';
+import { Button } from '@core/elements/Button';
+import { Text } from '@core/elements/Text';
 
 export class LoginPage extends BasePage {
-  readonly usernameInput = this.elements.input({
-    selector: '[data-test="username"]',
-    description: 'Username text field on the SauceDemo login form',
-  });
+  readonly urlPath = '/';
 
-  readonly passwordInput = this.elements.input({
-    selector: '[data-test="password"]',
-    description: 'Password text field on the SauceDemo login form',
-  });
+  readonly usernameInput = new Input(
+    this.page,
+    { selector: '[data-test="username"]', description: 'Username text field on the SauceDemo login form' },
+    this.healer,
+  );
 
-  readonly loginButton = this.elements.button({
-    selector: '[data-test="login-button"]',
-    description: 'Login submit button below the username/password fields',
-  });
+  readonly passwordInput = new Input(
+    this.page,
+    { selector: '[data-test="password"]', description: 'Password text field on the SauceDemo login form' },
+    this.healer,
+  );
 
-  readonly errorMessage = this.elements.text({
-    selector: '[data-test="error"]',
-    description: 'Error banner shown above the login form on a failed login attempt',
-  });
+  readonly loginButton = new Button(
+    this.page,
+    { selector: '[data-test="login-button"]', description: 'Login submit button below the username/password fields' },
+    this.healer,
+  );
 
-  async open(): Promise<void> {
-    await this.goto('/');
-  }
+  readonly errorMessage = new Text(
+    this.page,
+    {
+      selector: '[data-test="error"]',
+      description: 'Error banner shown above the login form on a failed login attempt',
+    },
+    this.healer,
+  );
 
   async login(username: string, password: string): Promise<void> {
     await this.usernameInput.fill(username);

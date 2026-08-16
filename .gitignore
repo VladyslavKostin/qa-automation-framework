@@ -10,14 +10,17 @@ blob-report/
 allure-results/
 allure-report/
 
-# Output of `npm run generate:test` — review before committing, don't auto-track
-src/pages/generated/
-tests/ui/generated/
-
 *.log
 .DS_Store
 
-# Claude Code / agent-skill tooling used to build this repo — not part of the deliverable
-.claude/
+# Claude Code / agent-skill tooling used to build this repo — not part of the deliverable,
+# except our own qa-* skills under .claude/skills/, which are (see README).
+.claude/*
+!.claude/skills
+.claude/skills/*
+!.claude/skills/qa-test-planner
+!.claude/skills/qa-page-object-writer
+!.claude/skills/qa-test-writer
+!.claude/skills/qa-generate-test
 .agents/
 skills-lock.json

@@ -15,7 +15,9 @@
     "baseUrl": ".",
     "paths": {
       "@core/*": ["src/core/*"],
-      "@pages/*": ["src/pages/*"]
+      "@pages/*": ["src/pages/*"],
+      "@entities/*": ["src/entities/*"],
+      "@testdata/*": ["src/testdata/*"]
     }
   },
   "include": ["src", "tests", "tools", "playwright.config.ts", "vitest.config.ts"]

@@ -1,17 +1,23 @@
 import { BasePage } from '@core/pages/BasePage';
+import { Button } from '@core/elements/Button';
+import { Text } from '@core/elements/Text';
 
 export class CartPage extends BasePage {
-  readonly firstItemName = this.elements.text({
-    selector: '[data-test="inventory-item-name"]',
-    description: 'Product name of the first line item in the cart list',
-  });
+  readonly urlPath = '/cart.html';
 
-  readonly checkoutButton = this.elements.button({
-    selector: '[data-test="checkout"]',
-    description: 'Checkout button at the bottom of the cart page',
-  });
+  readonly firstItemName = new Text(
+    this.page,
+    { selector: '[data-test="inventory-item-name"]', description: 'Product name of the first line item in the cart list' },
+    this.healer,
+  );
 
-  async getFirstItemName(): Promise<string> {
-    return this.firstItemName.getText();
+  readonly checkoutButton = new Button(
+    this.page,
+    { selector: '[data-test="checkout"]', description: 'Checkout button at the bottom of the cart page' },
+    this.healer,
+  );
+
+  async proceedToCheckout(): Promise<void> {
+    await this.checkoutButton.click();
   }
 }

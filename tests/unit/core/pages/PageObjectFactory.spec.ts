@@ -2,9 +2,11 @@ import { describe, expect, it } from 'vitest';
 import type { Page } from '@playwright/test';
 import { BasePage } from '@core/pages/BasePage';
 import { PageObjectFactory } from '@core/pages/PageObjectFactory';
+import { Text } from '@core/elements/Text';
 
 class DummyPage extends BasePage {
-  readonly title = this.elements.text({ selector: '#title', description: 'Page title banner' });
+  readonly urlPath = '/dummy.html';
+  readonly title = new Text(this.page, { selector: '#title', description: 'Page title banner' }, this.healer);
 }
 
 function makeFakePage(): Page {
@@ -21,6 +23,7 @@ describe('PageObjectFactory', () => {
 
     const dummy = factory.create(DummyPage);
 
+    expect(dummy.urlPath).toBe('/dummy.html');
     expect(dummy.title.description).toBe('Page title banner');
     await expect(dummy.title.getText()).resolves.toBe('hello');
   });

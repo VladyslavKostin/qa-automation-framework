@@ -1,23 +1,23 @@
 import type { Page } from '@playwright/test';
-import { ElementFactory } from '@core/elements/ElementFactory';
 import type { LocatorHealer } from '@core/healing/LocatorHealer';
 
 /**
- * Every page object extends this. It owns nothing but an `ElementFactory` bound to the current
- * page (and, if configured, the healer) — concrete pages declare their elements as readonly
- * fields built from `this.elements`, and their behaviour as methods that compose those elements.
+ * Every page object extends this. Elements are typed classes (`Button`, `Input`, ...)
+ * instantiated directly in the page object — `new Button(this.page, { selector, description },
+ * this.healer)` — rather than built through a factory, so a page object's element declarations
+ * read as plain, typed fields.
  */
 export abstract class BasePage {
-  protected readonly elements: ElementFactory;
+  /** Path (relative to the configured base URL) this page lives at — enables direct navigation. */
+  abstract readonly urlPath: string;
 
   constructor(
     protected readonly page: Page,
-    healer?: LocatorHealer,
-  ) {
-    this.elements = new ElementFactory(page, healer);
-  }
+    protected readonly healer?: LocatorHealer,
+  ) {}
 
-  async goto(path = '/'): Promise<void> {
-    await this.page.goto(path);
+  /** Navigates straight to this page's own `urlPath`. */
+  async open(): Promise<void> {
+    await this.page.goto(this.urlPath);
   }
 }

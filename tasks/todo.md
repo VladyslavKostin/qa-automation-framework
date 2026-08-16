@@ -5,17 +5,25 @@
       config, .gitignore, .env.example, folder skeleton
 
 ## core-framework
-- [x] Task: `Element` interface + `BaseElement` + `Button`/`Input`/`Dropdown`/`Checkbox`/`Link`
-      classes, each carrying `locator` + `description`
-- [x] Task: `PageObject` interface + `BasePage` + `ElementFactory`/`PageObjectFactory`
+- [x] Task: `Element` interface + `BaseElement` + `Button`/`Input`/`Dropdown`/`Checkbox`/`Link`/
+      `Text` classes, each carrying `locator` + `description`, instantiated directly (no element
+      factory — removed per user feedback)
+- [x] Task: `PageObject` interface + `BasePage` (with `urlPath` for direct navigation) +
+      `PageObjectFactory`
 - [x] Task: `ApiClient` abstraction (interface + fetch-based implementation) + schema validation
       helper
 - [x] Task: config loader (env vars → typed config: baseUrl, saucedemo creds, LLM provider choice)
 
+## entities-and-testdata
+- [x] Task: `src/entities/` (`Post`, `CheckoutInfo`) — response/domain types out of test files
+- [x] Task: `src/testdata/CheckoutInfoBuilder` — Builder pattern, `@faker-js/faker`-seeded
+      defaults, `with*()` overrides; unit-tested
+
 ## ui-e2e-tests
-- [x] Task: SauceDemo `LoginPage`, `InventoryPage`, `CartPage` page objects on top of
-      core-framework
-- [x] Task: UI spec — log in, add an item, verify cart (passes against the real site)
+- [x] Task: SauceDemo `LoginPage`, `InventoryPage`, `CartPage`, `CheckoutStepOnePage`,
+      `CheckoutOverviewPage`, `CheckoutCompletePage` page objects on top of core-framework
+- [x] Task: UI spec — log in, add an item, verify cart, checkout with builder-generated data —
+      written as a chain of `test.step()` actions; passes against the real site
 
 ## api-tests
 - [x] Task: API spec — GET a jsonplaceholder resource, assert response contract (passes against
@@ -31,10 +39,12 @@
       element's description, retry once, log the healing event. Unit-tested; live-key path
       documented as unverified in this environment (see README)
 
-## test-orchestrator-agents
-- [x] Task: `PlannerAgent`, `WriterAgent`, `PageObjectAgent`, `Orchestrator` (pipeline), CLI
-      entrypoint (`npm run generate:test -- "<scenario>"`). Smoke-tested for real; offline output
-      committed as a reference under docs/examples/orchestrator-output/
+## qa-skills
+- [x] Task: replace the standalone TS orchestrator tool (removed) with Claude Code skills —
+      `.claude/skills/qa-test-planner`, `qa-page-object-writer`, `qa-test-writer`,
+      `qa-generate-test` — per direct user feedback that this should be skills, not a new tool.
+      `.gitignore` carved out to publish just these four skill dirs (the platform's own bundled
+      skill copies under `.claude/skills/` stay excluded)
 
 ## reporting
 - [x] Task: wire `allure-playwright` reporter into playwright.config.ts; add
