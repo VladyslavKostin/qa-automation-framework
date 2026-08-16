@@ -1,0 +1,110 @@
+{
+  "info": {
+    "name": "JSONPlaceholder — Limestone Digital test task",
+    "description": "Part 2 of the QA Automation Engineer test task: GET /users and GET /posts?userId=1, each asserting a 200 status and that every returned object's key properties are present and non-empty.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET /users — list of users",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/users",
+          "host": ["{{baseUrl}}"],
+          "path": ["users"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Response is a non-empty array of users', function () {",
+              "    const users = pm.response.json();",
+              "    pm.expect(users).to.be.an('array').that.is.not.empty;",
+              "});",
+              "",
+              "pm.test('Every user has non-empty id, name, username, email', function () {",
+              "    const users = pm.response.json();",
+              "    const requiredKeys = ['id', 'name', 'username', 'email'];",
+              "",
+              "    users.forEach(function (user, index) {",
+              "        requiredKeys.forEach(function (key) {",
+              "            const value = user[key];",
+              "            pm.expect(value, `users[${index}].${key}`).to.not.equal(null);",
+              "            pm.expect(value, `users[${index}].${key}`).to.not.equal(undefined);",
+              "            pm.expect(value, `users[${index}].${key}`).to.not.equal('');",
+              "        });",
+              "    });",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "GET /posts?userId=1 — posts of one user",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/posts?userId=1",
+          "host": ["{{baseUrl}}"],
+          "path": ["posts"],
+          "query": [
+            {
+              "key": "userId",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Response is a non-empty array of posts', function () {",
+              "    const posts = pm.response.json();",
+              "    pm.expect(posts).to.be.an('array').that.is.not.empty;",
+              "});",
+              "",
+              "pm.test('Every post has non-empty userId, id, title, body', function () {",
+              "    const posts = pm.response.json();",
+              "    const requiredKeys = ['userId', 'id', 'title', 'body'];",
+              "",
+              "    posts.forEach(function (post, index) {",
+              "        requiredKeys.forEach(function (key) {",
+              "            const value = post[key];",
+              "            pm.expect(value, `posts[${index}].${key}`).to.not.equal(null);",
+              "            pm.expect(value, `posts[${index}].${key}`).to.not.equal(undefined);",
+              "            pm.expect(value, `posts[${index}].${key}`).to.not.equal('');",
+              "        });",
+              "    });",
+              "});",
+              "",
+              "pm.test('Every post belongs to userId 1', function () {",
+              "    const posts = pm.response.json();",
+              "    posts.forEach(function (post) {",
+              "        pm.expect(post.userId).to.eql(1);",
+              "    });",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

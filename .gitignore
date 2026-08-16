@@ -10,6 +10,10 @@ blob-report/
 allure-results/
 allure-report/
 
+# Output of `npm run generate:test` — review before committing, don't auto-track
+src/pages/generated/
+tests/ui/generated/
+
 *.log
 .DS_Store
 

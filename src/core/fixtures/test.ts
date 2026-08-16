@@ -26,7 +26,10 @@ export const test = base.extend<Fixtures>({
       : undefined;
     await use(new PageObjectFactory(page, healer));
   },
-  apiClient: async (_fixtures, use) => {
+  // Playwright statically parses this destructuring pattern to detect which fixtures a fixture
+  // depends on, so the empty `{}` here is required, not optional.
+  // eslint-disable-next-line no-empty-pattern
+  apiClient: async ({}, use) => {
     await use(new FetchApiClient(config.api.baseUrl));
   },
 });
