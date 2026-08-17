@@ -1,8 +1,7 @@
 # QA Automation Framework
 
 A from-scratch **TypeScript + Playwright** test automation framework, built for the Limestone
-Digital QA Automation Engineer test task and extended into a fuller architecture showcase (see
-[Scope vs. the brief](#scope-vs-the-brief) below for why, and what that trade-off costs).
+Digital QA Automation Engineer test task.
 
 - **Part 1** — this repo: a UI test (SauceDemo: log in → add to cart → checkout) and an API test
   (jsonplaceholder: GET + contract assertions), built on a SOLID/OOP framework with self-healing
